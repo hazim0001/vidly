@@ -1,13 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 //input: liked booolean
 // output: onClick
 
-class Like extends Component {
-    state = {  }
-    render() { 
-        return (  );
-    }
+const Like = (props) => {
+    return ( 
+        <React.Fragment>
+            {props.movie.liked ? (
+            <i className="fa fa-heart"></i>
+          ) : (
+            <i className="fa fa-heart-o"></i>
+          )}
+        </React.Fragment>
+     );
 }
  
 export default Like;

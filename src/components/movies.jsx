@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Like from "./common/like"
 import {
   getMovies,
   deleteMovie,
@@ -44,11 +45,7 @@ class Movies extends Component {
         <td>{movie.numberInStock}</td>
         <td>{movie.dailyRentalRate}</td>
         <td onClick={() => this.handleLike({ movie })}>
-          {movie.liked ? (
-            <i className="fa fa-heart"></i>
-          ) : (
-            <i className="fa fa-heart-o"></i>
-          )}
+          <Like movie={movie}/>
         </td>
         <td>
           <button
