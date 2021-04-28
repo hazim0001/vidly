@@ -4,8 +4,10 @@ import {
   getMovies,
   deleteMovie,
 } from "../Starter Code/services/fakeMovieService";
+import { genres } from "../Starter Code/services/fakeGenreService";
 import Pagination from "./common/pagination";
 import paginate from "./utils/paginate";
+import List from "./common/list";
 
 class Movies extends Component {
   constructor() {
@@ -13,15 +15,19 @@ class Movies extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.handleLike = this.handleLike.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleCategoryChange = this.handleCategoryChange.bind(this);
   }
   state = {
     movies: getMovies(),
     pageSize: 4,
     currentPage: 1,
+    genres: genres,
+    selectedGenre: "All Genres",
   };
 
   componentDidMount() {
     getMovies().map((movie) => (movie.liked = false));
+    // genres.map((genre) => (genre.selected = false));
   }
 
   handleDelete(id) {
@@ -38,6 +44,9 @@ class Movies extends Component {
   }
   handlePageChange(page) {
     this.setState({ currentPage: page });
+  }
+  handleCategoryChange(genre) {
+    this.setState({ selectedGenre: genre.name });
   }
 
   moviesList() {
@@ -93,16 +102,25 @@ class Movies extends Component {
   }
 
   render() {
-    const { pageSize, movies, currentPage } = this.state;
+    const { pageSize, movies, currentPage, genres, selectedGenre } = this.state;
     return (
-      <main className="container mt-5">
-        {this.conditionalMovies()}
-        <Pagination
-          itemsCount={movies.length}
-          pageSize={pageSize}
-          onPageChange={this.handlePageChange}
-          currentPage={currentPage}
-        />
+      <main className="d-flex mt-5">
+        <div className="mr-5">
+          <List
+            onCategoryChange={this.handleCategoryChange}
+            genres={genres}
+            selectedGenre={selectedGenre}
+          />
+        </div>
+        <div>
+          {this.conditionalMovies()}
+          <Pagination
+            itemsCount={movies.length}
+            pageSize={pageSize}
+            onPageChange={this.handlePageChange}
+            currentPage={currentPage}
+          />
+        </div>
       </main>
     );
   }
