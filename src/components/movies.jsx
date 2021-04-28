@@ -5,6 +5,7 @@ import {
   deleteMovie,
 } from "../Starter Code/services/fakeMovieService";
 import Pagination from "./common/pagination";
+import paginate from "./utils/paginate";
 
 class Movies extends Component {
   constructor() {
@@ -19,12 +20,8 @@ class Movies extends Component {
     currentPage: 1,
   };
 
-  addLiked() {
-    getMovies().map((movie) => (movie.liked = false));
-  }
-
   componentDidMount() {
-    this.addLiked();
+    getMovies().map((movie) => (movie.liked = false));
   }
 
   handleDelete(id) {
@@ -45,7 +42,12 @@ class Movies extends Component {
 
   moviesList() {
     // console.log(this.state.movies);
-    return this.state.movies.map((movie) => (
+    const movies = paginate(
+      this.state.movies,
+      this.state.currentPage,
+      this.state.pageSize
+    );
+    return movies.map((movie) => (
       <tr key={movie._id}>
         <th>{movie.title}</th>
         <td>{movie.genre.name}</td>
