@@ -1,18 +1,22 @@
 import React, { Component } from "react";
-import Like from "./common/like"
+import Like from "./common/like";
 import {
   getMovies,
   deleteMovie,
 } from "../Starter Code/services/fakeMovieService";
+import Pagination from "./common/pagination";
 
 class Movies extends Component {
   constructor() {
     super();
     this.handleDelete = this.handleDelete.bind(this);
     this.handleLike = this.handleLike.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
   state = {
     movies: getMovies(),
+    pageSize: 4,
+    currentPage: 1,
   };
 
   addLiked() {
@@ -35,6 +39,9 @@ class Movies extends Component {
     movies[index].movie.liked = !movies[index].movie.liked;
     this.setState({ movies });
   }
+  handlePageChange(page) {
+    this.setState({ currentPage: page });
+  }
 
   moviesList() {
     // console.log(this.state.movies);
@@ -45,7 +52,7 @@ class Movies extends Component {
         <td>{movie.numberInStock}</td>
         <td>{movie.dailyRentalRate}</td>
         <td onClick={() => this.handleLike({ movie })}>
-          <Like movie={movie}/>
+          <Like movie={movie} />
         </td>
         <td>
           <button
@@ -84,8 +91,18 @@ class Movies extends Component {
   }
 
   render() {
-    // console.log(this.state.movies);
-    return <main className="container mt-5">{this.conditionalMovies()}</main>;
+    const { pageSize, movies, currentPage } = this.state;
+    return (
+      <main className="container mt-5">
+        {this.conditionalMovies()}
+        <Pagination
+          itemsCount={movies.length}
+          pageSize={pageSize}
+          onPageChange={this.handlePageChange}
+          currentPage={currentPage}
+        />
+      </main>
+    );
   }
 }
 
