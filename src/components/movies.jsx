@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import Like from "./common/like";
+
 import {
   getMovies,
   deleteMovie,
 } from "../Starter Code/services/fakeMovieService";
 import { genres } from "../Starter Code/services/fakeGenreService";
 import Pagination from "./common/pagination";
-import paginate from "./utils/paginate";
+import MoviesTable from "./moviesTable";
+import sortGenres from "./utils/sortGenres";
 import List from "./common/list";
 
 class Movies extends Component {
@@ -23,6 +24,7 @@ class Movies extends Component {
     currentPage: 1,
     genres: genres,
     selectedGenre: "All Genres",
+    sortedMovies: getMovies(),
   };
 
   componentDidMount() {
@@ -46,76 +48,39 @@ class Movies extends Component {
     this.setState({ currentPage: page });
   }
   handleCategoryChange(genre) {
-    this.setState({ selectedGenre: genre.name });
-  }
-
-  moviesList() {
-    // console.log(this.state.movies);
-    const movies = paginate(
-      this.state.movies,
-      this.state.currentPage,
-      this.state.pageSize
-    );
-    return movies.map((movie) => (
-      <tr key={movie._id}>
-        <th>{movie.title}</th>
-        <td>{movie.genre.name}</td>
-        <td>{movie.numberInStock}</td>
-        <td>{movie.dailyRentalRate}</td>
-        <td onClick={() => this.handleLike({ movie })}>
-          <Like movie={movie} />
-        </td>
-        <td>
-          <button
-            className="btn btn-danger"
-            onClick={() => this.handleDelete({ _id: movie._id })}
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-    ));
-  }
-
-  conditionalMovies() {
-    // console.log(this.state);
-    if (this.state.movies.length === 0)
-      return <h3>There are no movies in the database</h3>;
-    return (
-      <div>
-        <h5>Showing {this.state.movies.length} movies in the database</h5>
-        <table className="table mt-3">
-          <thead>
-            <tr>
-              <th scope="col">Title</th>
-              <th scope="col">Genre</th>
-              <th scope="col">Stock</th>
-              <th scope="col">Rate</th>
-              <th scope="col"></th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>{this.moviesList()}</tbody>
-        </table>
-      </div>
-    );
+    this.setState({ selectedGenre: genre.name, currentPage: 1 });
+    this.setState({
+      sortedMovies: sortGenres(this.state.genres, genre, this.state.movies),
+    });
   }
 
   render() {
-    const { pageSize, movies, currentPage, genres, selectedGenre } = this.state;
+    const {
+      pageSize,
+      currentPage,
+      genres,
+      selectedGenre,
+      sortedMovies,
+    } = this.state;
     return (
-      <main className="d-flex mt-5">
-        <div className="mr-5">
+      <main className="row mt-5">
+        <div className="col-3">
           <List
             onCategoryChange={this.handleCategoryChange}
             genres={genres}
             selectedGenre={selectedGenre}
           />
         </div>
-        <div>
-          {this.conditionalMovies()}
+        <div className="col">
+          <MoviesTable
+            sortedMovies={sortedMovies}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onDelete={this.handleDelete}
+            onLike={this.handleLike}
+          />
           <Pagination
-            itemsCount={movies.length}
+            itemsCount={sortedMovies.length}
             pageSize={pageSize}
             onPageChange={this.handlePageChange}
             currentPage={currentPage}
