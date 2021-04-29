@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import {
   getMovies,
   deleteMovie,
@@ -17,6 +16,7 @@ class Movies extends Component {
     this.handleLike = this.handleLike.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
+    this.handleSort = this.handleSort.bind(this);
   }
   state = {
     movies: getMovies(),
@@ -25,6 +25,7 @@ class Movies extends Component {
     genres: genres,
     selectedGenre: "All Genres",
     sortedMovies: getMovies(),
+    sortColumn: { path: "title", order: "asc" },
   };
 
   componentDidMount() {
@@ -54,6 +55,10 @@ class Movies extends Component {
     });
   }
 
+  handleSort(sortColumn) {
+    this.setState({ sortColumn });
+  }
+
   render() {
     const {
       pageSize,
@@ -61,6 +66,7 @@ class Movies extends Component {
       genres,
       selectedGenre,
       sortedMovies,
+      sortColumn,
     } = this.state;
     return (
       <main className="row mt-5">
@@ -78,6 +84,8 @@ class Movies extends Component {
             pageSize={pageSize}
             onDelete={this.handleDelete}
             onLike={this.handleLike}
+            onSort={this.handleSort}
+            sortColumn={sortColumn}
           />
           <Pagination
             itemsCount={sortedMovies.length}
