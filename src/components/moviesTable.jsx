@@ -6,7 +6,6 @@ import _ from "lodash";
 class MoviesTable extends Component {
   raiseSort(path) {
     const sortColumn = { ...this.props.sortColumn };
-    console.log(sortColumn);
     if (sortColumn.path === path) {
       sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
     } else {

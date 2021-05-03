@@ -25,11 +25,16 @@ class Movies extends Component {
     genres: genres,
     selectedGenre: "All Genres",
     sortedMovies: getMovies(),
-    sortColumn: { path: "title", order: "asc" },
+    sortColumn: {
+      path: "title",
+      order: "asc",
+      sort: <i></i>,
+    },
   };
 
   componentDidMount() {
     getMovies().map((movie) => (movie.liked = false));
+    // console.log(this.state.sortColumn);
     // genres.map((genre) => (genre.selected = false));
   }
 
