@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import paginate from "./utils/paginate";
 import Like from "./common/like";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 
 class MoviesTable extends Component {
   raiseSort(path) {
@@ -13,6 +14,9 @@ class MoviesTable extends Component {
       sortColumn.order = "asc";
     }
     this.props.onSort(sortColumn);
+  }
+  handleTitleClick(movie) {
+    console.log(movie);
   }
 
   render() {
@@ -55,7 +59,9 @@ class MoviesTable extends Component {
           <tbody>
             {movies.map((movie) => (
               <tr key={movie._id}>
-                <th>{movie.title}</th>
+                <th>
+                  <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
+                </th>
                 <td>{movie.genre.name}</td>
                 <td>{movie.numberInStock}</td>
                 <td>{movie.dailyRentalRate}</td>
