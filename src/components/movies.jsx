@@ -10,14 +10,14 @@ import sortGenres from "./utils/sortGenres";
 import List from "./common/list";
 
 class Movies extends Component {
-  constructor() {
-    super();
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleLike = this.handleLike.bind(this);
-    this.handlePageChange = this.handlePageChange.bind(this);
-    this.handleCategoryChange = this.handleCategoryChange.bind(this);
-    this.handleSort = this.handleSort.bind(this);
-  }
+  // constructor() {
+  //   super();
+  //   this.handleDelete = this.handleDelete.bind(this);
+  //   this.handleLike = this.handleLike.bind(this);
+  //   this.handlePageChange = this.handlePageChange.bind(this);
+  //   this.handleCategoryChange = this.handleCategoryChange.bind(this);
+  //   this.handleSort = this.handleSort.bind(this);
+  // }
   state = {
     movies: getMovies(),
     pageSize: 4,
@@ -38,31 +38,31 @@ class Movies extends Component {
     // genres.map((genre) => (genre.selected = false));
   }
 
-  handleDelete(id) {
+  handleDelete = (id) => {
     deleteMovie(id._id);
     this.setState({ movies: getMovies() });
-  }
+  };
 
-  handleLike(movie) {
+  handleLike = (movie) => {
     const movies = [...this.state.movies];
     const index = movies.indexOf(movie);
     movies[index] = { ...movie };
     movies[index].movie.liked = !movies[index].movie.liked;
     this.setState({ movies });
-  }
-  handlePageChange(page) {
+  };
+  handlePageChange = (page) => {
     this.setState({ currentPage: page });
-  }
-  handleCategoryChange(genre) {
+  };
+  handleCategoryChange = (genre) => {
     this.setState({ selectedGenre: genre.name, currentPage: 1 });
     this.setState({
       sortedMovies: sortGenres(this.state.genres, genre, this.state.movies),
     });
-  }
+  };
 
-  handleSort(sortColumn) {
+  handleSort = (sortColumn) => {
     this.setState({ sortColumn });
-  }
+  };
 
   render() {
     const {
