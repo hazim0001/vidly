@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Input from "./common/input";
 
 class LoginForm extends Component {
   constructor() {
@@ -15,9 +16,10 @@ class LoginForm extends Component {
     const account = { ...this.state.account };
     account[event.currentTarget.name] = event.currentTarget.value;
     this.setState({ account });
+    console.log(account);
   }
 
-  // password = React.createRef()
+  // password = React.createRef()\\\
   // to get the date inside the form
   username = React.createRef();
   handleSubmit(event) {
@@ -31,30 +33,18 @@ class LoginForm extends Component {
       <div>
         <h1>Login</h1>
         <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input
-              //   autoFocus
-              value={account.username}
-              onChange={this.handleChange}
-              ref={this.username}
-              id="username"
-              name="username"
-              type="text"
-              className="form-control"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              value={account.password}
-              onChange={this.handleChange}
-              id="password"
-              name="password"
-              type="text"
-              className="form-control"
-            />
-          </div>
+          <Input
+            name={"username"}
+            onChange={this.handleChange}
+            value={account.username}
+            label={"Username"}
+          />
+          <Input
+            name={"password"}
+            onChange={this.handleChange}
+            value={account.password}
+            label={"Password"}
+          />
           <button className="btn btn-primary">Submit</button>
         </form>
       </div>
